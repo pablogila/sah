@@ -11,13 +11,13 @@ readme = './README.md'
 temp_readme = './_README_temp.md'
 # Update links from the README
 fix_dict ={
-    '[classes](https://pablogila.github.io/sah/sah/classes.html)'             : '`sah.classes`',
-    '[fit](https://pablogila.github.io/sah/sah/fit.html)'                     : '`sah.fit`',
-    '[normalize](https://pablogila.github.io/sah/sah/normalize.html)'         : '`sah.normalize`',
-    '[plot](https://pablogila.github.io/sah/sah/plot.html)'                   : '`sah.plot`',
-    '[deuterium](https://pablogila.github.io/sah/sah/deuterium.html)'         : '`sah.deuterium`',
-    '[samples](https://pablogila.github.io/sah/sah/samples.html)'             : '`sah.samples`',
-    'Check the [full documentation online](https://pablogila.github.io/sah/).'         : '',
+    '[classes](https://pablogila.github.io/sah/sah/classes.html)'              : '`sah.classes`',
+    '[fit](https://pablogila.github.io/sah/sah/fit.html)'                      : '`sah.fit`',
+    '[normalize](https://pablogila.github.io/sah/sah/normalize.html)'          : '`sah.normalize`',
+    '[plot](https://pablogila.github.io/sah/sah/plot.html)'                    : '`sah.plot`',
+    '[deuterium](https://pablogila.github.io/sah/sah/deuterium.html)'          : '`sah.deuterium`',
+    '[samples](https://pablogila.github.io/sah/sah/samples.html)'              : '`sah.samples`',
+    'Check the [full documentation online](https://pablogila.github.io/sah/).' : '',
 }
 
 # Get the package version as __version__
