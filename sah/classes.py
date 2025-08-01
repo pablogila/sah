@@ -40,7 +40,12 @@ import pandas as pd
 from copy import deepcopy
 import os
 import aton.alias as alias
-import aton.phys as phys
+import scipy
+
+
+# Common conversion factors
+cm1_to_meV = (scipy.constants.h * scipy.constants.c * 100 / scipy.constants.e) * 1000
+meV_to_cm1 = 1 / cm1_to_meV
 
 
 class Plotting:
@@ -319,10 +324,10 @@ class Spectra:
         for i, unit in enumerate(self.units):
             if unit == units_in[i]:
                 continue
-            if unit == mev and units_in[i] == cm:
-                self.dfs[i][self.dfs[i].columns[0]] = self.dfs[i][self.dfs[i].columns[0]] * phys.cm1_to_meV
+            if unit == mev and units_in[i] == cm: 
+                self.dfs[i][self.dfs[i].columns[0]] = self.dfs[i][self.dfs[i].columns[0]] * cm1_to_meV
             elif unit == cm and units_in[i] == mev:
-                self.dfs[i][self.dfs[i].columns[0]] = self.dfs[i][self.dfs[i].columns[0]] * phys.meV_to_cm1
+                self.dfs[i][self.dfs[i].columns[0]] = self.dfs[i][self.dfs[i].columns[0]] * meV_to_cm1
             else:
                 raise ValueError(f"Unit conversion error between '{unit}' and '{units_in[i]}'")
         # Rename dataframe columns
@@ -426,15 +431,16 @@ class Material:
 
         If `Material.grams` is provided, the number of moles will be
         calculated and overwritten. Isotopes can be used as 'element + A',
-        eg. `'He4'`. This gets splitted with `aton.phys.split_isotope()`.
+        eg. `'He4'`. This gets splitted with `aton.txt.extract.isotope()`.
         """
         material_grams_per_mol = 0.0
         for key in self.elements:
             try:
-                material_grams_per_mol += self.elements[key] * phys.atoms[key].mass
-            except KeyError: # Split the atomic flag as H2, etc
-                element, isotope = phys.split_isotope(key)
-                material_grams_per_mol += self.elements[key] * phys.atoms[element].isotope[isotope].mass
+                material_grams_per_mol += self.elements[key] * periodictable.elements.symbol(key).mass
+            except KeyError:  # Split the atomic flag as H2, etc
+                element, isotope = aton.txt.extract.isotope(key)
+                isotope_name = isotope+'-'+element  # Periodictable format
+                material_grams_per_mol += self.elements[key] * periodictable.elements.isotope(isotope_name).mass
         self.molar_mass = material_grams_per_mol
         if self.grams is not None:
             self._set_grams_error()
@@ -444,7 +450,7 @@ class Material:
     def _set_cross_section(self):
         """Set the cross section of the material, based on the `elements` dict.
 
-        If an isotope is used, eg. `'He4'`, it splits the name with `aton.phys.split_isotope()`.
+        If an isotope is used, eg. `'He4'`, it splits the name with `aton.txt.extract.isotope()`.
         """
         total_cross_section = 0.0
         for key in self.elements:

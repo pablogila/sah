@@ -1,7 +1,7 @@
 """
 # Description
 
-This module contains methods to calculate deuteration levels from different spectra.
+This module contains methods to calculate deuteration levels from INS spectra.
 
 
 # Index
@@ -9,7 +9,7 @@ This module contains methods to calculate deuteration levels from different spec
 | | |
 | --- | --- |
 | `impulse_approx()` | Calculate the deuteration levels from INS spectra with the Impulse Approximation |
-| `peaks_mapbi3()`   | Estimates CH$_3$NH$_3$PbI$_3$ deuteration by integrating the INS disrotatory peaks |
+| `amine_peaks()`    | Estimates amine deuteration by integrating the partially-deuterated peaks from INS |
 
 ---
 """
@@ -101,7 +101,7 @@ def impulse_approx(
     return round(deuteration,2), round(deuteration_error,2)
 
 
-def peaks_mapbi3(
+def amine_peaks(
         ins:Spectra,
         peaks:dict,
         df_index:int=0,

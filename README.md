@@ -1,7 +1,7 @@
 <p align="center"><img width="40.0%" src="pics/sah.png"></p>
 
 
-The Spectra Analyser for Hydrogenous samples allows researchers to dive into INS, Raman and FTIR spectral data.
+The Spectral Analysis for Hydrogenous samples (SAH) allows researchers to dive into INS, Raman and FTIR spectral data.
 
 Named after the ancient egyptian god Sah, the personification of the constellation Orion and highly related with Osiris.
 
