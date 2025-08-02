@@ -9,7 +9,7 @@ This module contains methods to calculate deuteration levels from INS spectra.
 | | |
 | --- | --- |
 | `impulse_approx()` | Calculate the deuteration levels from INS spectra with the Impulse Approximation |
-| `amine_peaks()`    | Estimates amine deuteration by integrating the partially-deuterated peaks from INS |
+| `ins_peaks()`      | Estimates amine deuteration by integrating the partially-deuterated peaks from INS |
 
 ---
 """
@@ -32,7 +32,7 @@ def impulse_approx(
     ) -> tuple:
     """Calculate the deuteration levels from INS spectra
     with the *Impulse Approximation*, see
-    [Andreani et al., Advances in Physics 66, 1–73 (2017)](https://www.tandfonline.com/doi/full/10.1080/00018732.2017.1317963).
+    [Andreani et al., Advances in Physics 66, 1-73 (2017)](https://www.tandfonline.com/doi/full/10.1080/00018732.2017.1317963).
 
     Protonated and deuterated materials must be specified
     as `sah.classes.Material` objects.
@@ -101,14 +101,15 @@ def impulse_approx(
     return round(deuteration,2), round(deuteration_error,2)
 
 
-def amine_peaks(
+def ins_peaks(
         ins:Spectra,
         peaks:dict,
         df_index:int=0,
     ) -> str:
-    """Estimates CH$_3$NH$_3$PbI$_3$ deuteration by integrating the INS disrotatory peaks.
+    """Estimates partial deuteration by integrating the INS disrotatory peaks.
+    The amines should not interfere with each other, as in the case of CH$_3$NH$_3$PbI$_3$.
 
-    The INS disrotatory peaks of CH3NH3 appear at ~38 meV for the fully protonated sample.
+    In the MAPbI3 example, the INS disrotatory peaks of CH3NH3 appear at ~38 meV for the fully protonated sample.
     Note that `peaks` must be a dictionary with the peak limits
     and the baseline, as in the example below:
     ```python

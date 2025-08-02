@@ -39,7 +39,8 @@ import numpy as np
 import pandas as pd
 from copy import deepcopy
 import os
-import aton.alias as alias
+import aton
+import periodictable
 import scipy
 
 
@@ -215,11 +216,11 @@ class Spectra:
 
     def _set_type(self, type):
         """Set and normalize the type of the spectra: `INS`, `ATR`, or `RAMAN`."""
-        if type.lower() in alias.experiments['ins']:
+        if type.lower() in aton.alias.experiments['ins']:
             self.type = 'ins'
-        elif type.lower() in alias.experiments['atr']:
+        elif type.lower() in aton.alias.experiments['atr']:
             self.type = 'atr'
-        elif type.lower() in alias.experiments['raman']:
+        elif type.lower() in aton.alias.experiments['raman']:
             self.type = 'raman'
         else:
             self.type = type.lower()
@@ -246,7 +247,13 @@ class Spectra:
         """Read a dataframe from a file."""
         root = os.getcwd()
         file_path = os.path.join(root, filename)
-        df = pd.read_csv(file_path, comment='#')
+        # Try reading with tab delimiter, fallback to default if fails
+        try:
+            df = pd.read_csv(file_path, comment='#', header=None)
+        except Exception:
+            df = pd.read_csv(file_path, comment='#', sep=r'\s+', header=None)
+        # Remove any empty columns
+        df = df.dropna(axis=1, how='all')
         df = df.sort_values(by=df.columns[0]) # Sort the data by energy
 
         print(f'\nNew dataframe from {filename}')
@@ -269,8 +276,8 @@ class Spectra:
         mev = 'meV'
         cm = 'cm-1'
         unit_format={
-                mev: alias.units['meV'],
-                cm: alias.units['cm1'] + alias.units['cm'],
+                mev: aton.alias.units['meV'],
+                cm: aton.alias.units['cm1'] + aton.alias.units['cm'],
             }
         if self.units is not None:
             units_in = deepcopy(self.units)
@@ -326,12 +333,6 @@ class Spectra:
                 continue
             if unit == mev and units_in[i] == cm: 
                 self.dfs[i][self.dfs[i].columns[0]] = self.dfs[i][self.dfs[i].columns[0]] * cm1_to_meV
-            elif unit == cm and units_in[i] == mev:
-                self.dfs[i][self.dfs[i].columns[0]] = self.dfs[i][self.dfs[i].columns[0]] * meV_to_cm1
-            else:
-                raise ValueError(f"Unit conversion error between '{unit}' and '{units_in[i]}'")
-        # Rename dataframe columns
-        E_units = None
         for i, df in enumerate(self.dfs):
             if self.units[i] == mev:
                 E_units = 'meV'
@@ -342,17 +343,17 @@ class Spectra:
             if self.type == 'ins':
                 if self.dfs[i].shape[1] == 3:
                     self.dfs[i].columns = [f'Energy transfer / {E_units}', 'S(Q,E)', 'Error']
-                else:
+                elif self.dfs[i].shape[1] == 2:
                     self.dfs[i].columns = [f'Energy transfer / {E_units}', 'S(Q,E)']
             elif self.type == 'atr':
                 if self.dfs[i].shape[1] == 3:
                     self.dfs[i].columns = [f'Wavenumber / {E_units}', 'Absorbance', 'Error']
-                else:
+                elif self.dfs[i].shape[1] == 2:
                     self.dfs[i].columns = [f'Wavenumber / {E_units}', 'Absorbance']
             elif self.type == 'raman':
                 if self.dfs[i].shape[1] == 3:
                     self.dfs[i].columns = [f'Raman shift / {E_units}', 'Counts', 'Error']
-                else:
+                elif self.dfs[i].shape[1] == 2:
                     self.dfs[i].columns = [f'Raman shift / {E_units}', 'Counts']
         return self
 
@@ -455,10 +456,11 @@ class Material:
         total_cross_section = 0.0
         for key in self.elements:
             try:
-                total_cross_section += self.elements[key] * phys.atoms[key].cross_section
+                total_cross_section += self.elements[key] * periodictable.elements.symbol(key).neutron.total
             except KeyError: # Split the atomic flag as H2, etc
-                element, isotope_index = phys.split_isotope(key)
-                total_cross_section += self.elements[key] * phys.atoms[element].isotope[isotope_index].cross_section
+                element, isotope_index = aton.txt.extract.isotope(key)
+                isotope_name = isotope+'-'+element  # Periodictable format
+                total_cross_section += self.elements[key] * periodictable.elements.isotope(isotope_name).neutron.total
         self.cross_section = total_cross_section
 
     def set(self):
