@@ -247,11 +247,7 @@ class Spectra:
         """Read a dataframe from a file."""
         root = os.getcwd()
         file_path = os.path.join(root, filename)
-        # Try reading with tab delimiter, fallback to default if fails
-        try:
-            df = pd.read_csv(file_path, comment='#', header=None)
-        except Exception:
-            df = pd.read_csv(file_path, comment='#', sep=r'\s+', header=None)
+        df = pd.read_csv(file_path, comment='#', sep=r',|;|\s+', engine='python', header=None)
         # Remove any empty columns
         df = df.dropna(axis=1, how='all')
         df = df.sort_values(by=df.columns[0]) # Sort the data by energy

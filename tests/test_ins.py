@@ -28,6 +28,8 @@ def test_spectra():
     )
     assert ins.units == ['meV', 'meV']
     assert ins.type == 'ins'
+    # More than two columns per df
+    assert ins.dfs[0].shape[1] >= 2
 
 
 def test_normalize():
