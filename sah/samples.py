@@ -14,14 +14,14 @@ from .classes import Material
 
 CH3NH3PbI3 = Material(
     elements={'Pb': 1, 'I': 3, 'C': 1, 'N': 1, 'H': 6},
-    name='MAPbI3'
+    name='MAPbI$_3$'
     )
 """CH$_3$NH$_3$PbI$_3$"""
 
 
 CD3ND3PbI3 = Material(
-    elements={'Pb': 1, 'I': 3, 'C': 1, 'N': 1, 'H2': 6},
-    name='CD3ND3PbI3',
+    elements={'Pb': 1, 'I': 3, 'C': 1, 'N': 1, 'D': 6},
+    name='CD$_3$ND$_3$PbI$_3$',
     peaks = {
         'baseline'       : 0.057,  # IREPA-ND-02
         'baseline_error' : 0.008,
@@ -40,8 +40,8 @@ Measured at TOSCA, ISIS RAL, UK, May 2024.
 
 
 CH3ND3PbI3 = Material(
-    elements={'Pb': 1, 'I': 3, 'C': 1, 'N': 1, 'H': 3, 'H2': 3},
-    name='CH3ND3PbI3',
+    elements={'Pb': 1, 'I': 3, 'C': 1, 'N': 1, 'H': 3, 'D': 3},
+    name='CH$_3$ND$_3$PbI$_3$',
     peaks = {
         'baseline'       : 0.057,  # IREPA-ND-02
         'baseline_error' : 0.008,
@@ -61,8 +61,8 @@ Measured at TOSCA, ISIS RAL, UK, May 2024.
 
 
 CD3NH3PbI3 = Material(
-    elements={'Pb': 1, 'I': 3, 'C': 1, 'N': 1, 'H': 3, 'H2': 3},
-    name='CD3NH3PbI3',
+    elements={'Pb': 1, 'I': 3, 'C': 1, 'N': 1, 'H': 3, 'D': 3},
+    name='CD$_3$NH$_3$PbI$_3$',
 )
 """CD$_3$NH$_3$PbI$_3$"""
 #MAPI_CD.set()
@@ -70,15 +70,15 @@ CD3NH3PbI3 = Material(
 
 CH3NH3I = Material(
     elements={'C' : 1, 'N': 1, 'H': 6},
-    name='CH3NH3'
+    name='CH$_3$NH$_3$I'
 )
 """CH$_3$NH$_3$I"""
 #CH3NH3I.set()
 
 
 CH3ND3I = Material(
-    elements={'C' : 1, 'N': 1, 'H': 3, 'H2': 3},
-    name='CH3ND3'
+    elements={'C' : 1, 'N': 1, 'H': 3, 'D': 3},
+    name='CH$_3$ND$_3$I'
 )
 """CH$_3$ND$_3$I"""
 #CH3ND3I.set()

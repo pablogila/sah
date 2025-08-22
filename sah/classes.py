@@ -379,7 +379,7 @@ class Material:
         and optionally the name, and calculate the rest with `Material.set()`.
         """
         self.elements = elements
-        """Dict of atoms in the material, as in `{'H': 6, 'C':1, 'N':1}`.
+        """Dict of atoms in the material, as in `{'C':1, 'N':1, 'H': 3, 'D':3}`.
 
         Isotopes can be expressed as 'H2', 'He4', etc. with the atom symbol + isotope mass number.
         """
