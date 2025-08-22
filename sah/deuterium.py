@@ -92,8 +92,10 @@ def impulse_approx(
     deuteration = (1 - ratio) / (1 - ratio_ideal)
     deuteration_error = abs(deuteration * np.sqrt((ratio_error / ratio)**2))
 
-    print(f'Normalized plateau H:      {plateau_H_normalized} +- {plateau_H_normalized_error}')
-    print(f'Normalized plateau D:      {plateau_D_normalized} +- {plateau_D_normalized_error}')
+    print(f'Plateau H:                 {plateau_H} +- {plateau_H_error}')
+    print(f'Plateau H / mols:          {plateau_H_normalized} +- {plateau_H_normalized_error}')
+    print(f'Plateau D:                 {plateau_D} +- {plateau_D_error}')
+    print(f'Plateau D / mols:          {plateau_D_normalized} +- {plateau_D_normalized_error}')
     print(f'Ratio D/H plateaus:        {ratio} +- {ratio_error}')
     print(f'Ratio D/H cross sections:  {ratio_ideal}')
 
